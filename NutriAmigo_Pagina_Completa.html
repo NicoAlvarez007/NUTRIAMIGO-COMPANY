@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriAmigo — Tu salud en la palma de tu mano</title>
+<meta name="description" content="NutriAmigo: aplicación móvil de asesoría nutricional y física personalizada mediante inteligencia artificial. Proyecto de empresa — I.E. Bosques de Sirivana.">
+<style>
+/* ============================================================
+   NutriAmigo — sistema de diseño
+   Paleta: verde herbal + azul petróleo (salud, confianza, calma)
+   Display: Space Grotesk · Cuerpo: Inter · Acento: Fraunces italic
+   Datos/labels: IBM Plex Mono
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz@1,9..144&family=IBM+Plex+Mono:wght@500&display=swap');
+
+:root{
+  --bg:        #F5F8F3;
+  --bg-alt:    #EAF0E6;
+  --panel:     #FFFFFF;
+  --ink:       #10261F;
+  --ink-soft:  #45584D;
+  --green:     #1E6E4C;
+  --green-deep:#0F3D2A;
+  --petrol:    #123F49;
+  --petrol-2:  #1E6672;
+  --coral:     #FF6B3D;
+  --line:      rgba(16,38,31,0.14);
+  --line-soft: rgba(16,38,31,0.08);
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-accent: 'Fraunces', serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius-lg: 28px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  --wrap: 1180px;
+}
+
+*, *::before, *::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+ul{ margin:0; padding:0; list-style:none; }
+h1,h2,h3,h4{ font-family:var(--font-display); margin:0; color:var(--green-deep); letter-spacing:-0.01em; }
+p{ margin:0; }
+.container{ width:100%; max-width:var(--wrap); margin:0 auto; padding:0 28px; }
+
+::selection{ background:var(--coral); color:#fff; }
+
+:focus-visible{
+  outline: 3px solid var(--coral);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- eyebrow / labels ---------- */
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--green);
+  display:inline-flex;
+  align-items:center;
+  gap:.5em;
+}
+.eyebrow::before{
+  content:"";
+  width:7px; height:7px;
+  border-radius:50%;
+  background:var(--coral);
+  display:inline-block;
+}
+
+/* ---------- header / nav ---------- */
+.site-header{
+  position:sticky; top:0; z-index:50;
+  background:rgba(245,248,243,0.86);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line-soft);
+}
+.nav{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 0;
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+  font-family:var(--font-display); font-weight:700; font-size:1.15rem;
+  color:var(--green-deep);
+}
+.brand-mark{
+  width:34px; height:34px; border-radius:10px;
+  background:linear-gradient(155deg, var(--green) 0%, var(--petrol) 100%);
+  position:relative; flex-shrink:0;
+}
+.brand-mark::before{
+  content:"";
+  position:absolute; inset:0;
+  margin:auto;
+  width:14px; height:14px;
+  border-radius:50% 50% 50% 4px;
+  background:var(--bg);
+  transform:rotate(45deg);
+  top:9px; left:0; right:0;
+}
+.nav-links{ display:flex; gap:2px; align-items:center; }
+.nav-links a{
+  padding:9px 15px;
+  border-radius:100px;
+  font-size:.92rem;
+  font-weight:500;
+  color:var(--ink-soft);
+  transition:background .15s ease, color .15s ease;
+}
+.nav-links a:hover{ background:var(--bg-alt); color:var(--green-deep); }
+.nav-links a.active{ background:var(--green-deep); color:#fff; }
+.nav-toggle{ display:none; }
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:13px 24px;
+  border-radius:100px;
+  font-weight:600; font-size:.95rem;
+  font-family:var(--font-body);
+  border:1px solid transparent;
+  cursor:pointer;
+}
+.btn-primary{ background:var(--green-deep); color:#fff; }
+.btn-primary:hover{ background:var(--green); }
+.btn-ghost{ border-color:var(--line); color:var(--ink); background:transparent; }
+.btn-ghost:hover{ border-color:var(--green); color:var(--green-deep); }
+
+/* ---------- hero ---------- */
+.hero{
+  padding:76px 0 64px;
+  position:relative;
+  overflow:hidden;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:56px;
+  align-items:center;
+}
+.hero h1{
+  font-size:clamp(2.4rem, 4.6vw, 3.6rem);
+  line-height:1.05;
+  margin-top:18px;
+}
+.hero .accent{
+  font-family:var(--font-accent);
+  font-style:italic;
+  font-weight:400;
+  color:var(--coral);
+}
+.hero p.lede{
+  margin-top:20px;
+  max-width:46ch;
+  font-size:1.08rem;
+  color:var(--ink-soft);
+}
+.hero-cta{ margin-top:30px; display:flex; gap:12px; flex-wrap:wrap; }
+
+/* ---------- phone mockup — signature element ---------- */
+.phone{
+  width:min(300px, 78vw);
+  margin:0 auto;
+  aspect-ratio:9/18.5;
+  background:var(--green-deep);
+  border-radius:38px;
+  padding:12px;
+  box-shadow:0 30px 60px -20px rgba(15,61,42,.45), 0 0 0 1px rgba(15,61,42,.08);
+  position:relative;
+}
+.phone::before{
+  content:"";
+  position:absolute; top:12px; left:50%; transform:translateX(-50%);
+  width:64px; height:18px; background:var(--green-deep);
+  border-radius:0 0 14px 14px; z-index:2;
+}
+.phone-screen{
+  background:var(--bg);
+  width:100%; height:100%;
+  border-radius:26px;
+  padding:34px 16px 16px;
+  display:flex; flex-direction:column; gap:12px;
+  overflow:hidden;
+}
+.ps-greeting{ font-family:var(--font-mono); font-size:.62rem; color:var(--ink-soft); letter-spacing:.06em; text-transform:uppercase; }
+.ps-title{ font-family:var(--font-display); font-weight:600; font-size:1rem; color:var(--green-deep); }
+.ps-ring{
+  margin:6px auto 2px;
+  width:104px; height:104px; border-radius:50%;
+  background:conic-gradient(var(--coral) 0deg 252deg, var(--line-soft) 252deg 360deg);
+  display:flex; align-items:center; justify-content:center;
+}
+.ps-ring-inner{
+  width:78px; height:78px; border-radius:50%; background:var(--panel);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+}
+.ps-ring-inner b{ font-family:var(--font-display); font-size:1.15rem; color:var(--green-deep); }
+.ps-ring-inner span{ font-family:var(--font-mono); font-size:.58rem; color:var(--ink-soft); }
+.ps-card{
+  background:var(--panel); border-radius:12px; padding:10px 12px;
+  display:flex; align-items:center; justify-content:space-between;
+  border:1px solid var(--line-soft);
+}
+.ps-card b{ font-size:.78rem; }
+.ps-card span{ font-family:var(--font-mono); font-size:.62rem; color:var(--green); }
+.ps-dot-row{ display:flex; gap:6px; margin-top:auto; justify-content:center; padding-top:6px; }
+.ps-dot{ width:5px; height:5px; border-radius:50%; background:var(--line); }
+.ps-dot.on{ background:var(--green); width:16px; border-radius:4px; }
+
+/* ---------- sections ---------- */
+section{ padding:74px 0; }
+.section-alt{ background:var(--bg-alt); }
+.section-dark{ background:var(--green-deep); color:#fff; }
+.section-dark h2, .section-dark h3, .section-dark .eyebrow{ color:#fff; }
+.section-dark .eyebrow::before{ background:var(--coral); }
+.section-head{ max-width:640px; margin-bottom:44px; }
+.section-head h2{ font-size:clamp(1.7rem,3vw,2.3rem); margin-top:12px; }
+.section-head p{ margin-top:14px; color:var(--ink-soft); font-size:1.02rem; }
+.section-dark .section-head p{ color:rgba(255,255,255,.78); }
+
+/* ---------- cards / grids ---------- */
+.grid{ display:grid; gap:22px; }
+.grid-2{ grid-template-columns:repeat(2,1fr); }
+.grid-3{ grid-template-columns:repeat(3,1fr); }
+.grid-4{ grid-template-columns:repeat(4,1fr); }
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--line-soft);
+  border-radius:var(--radius-md);
+  padding:26px;
+}
+.card h3{ font-size:1.08rem; margin-bottom:10px; }
+.card p{ color:var(--ink-soft); font-size:.95rem; }
+.card .num{
+  font-family:var(--font-mono); font-size:.72rem; color:var(--coral);
+  margin-bottom:10px; display:block;
+}
+
+.stat{
+  background:var(--panel); border-radius:var(--radius-md);
+  border:1px solid var(--line-soft);
+  padding:24px;
+}
+.stat b{
+  font-family:var(--font-display); font-size:2rem; color:var(--green-deep); display:block;
+}
+.stat span{ font-family:var(--font-mono); font-size:.72rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; }
+.stat small{ display:block; margin-top:8px; color:var(--ink-soft); font-size:.85rem; }
+
+/* ---------- timeline ---------- */
+.timeline{ position:relative; padding-left:26px; }
+.timeline::before{
+  content:""; position:absolute; left:5px; top:6px; bottom:6px; width:2px;
+  background:var(--line);
+}
+.tl-item{ position:relative; padding-bottom:34px; }
+.tl-item:last-child{ padding-bottom:0; }
+.tl-item::before{
+  content:""; position:absolute; left:-26px; top:4px;
+  width:12px; height:12px; border-radius:50%;
+  background:var(--coral); border:3px solid var(--bg);
+  box-shadow:0 0 0 1px var(--line);
+}
+.tl-item .tl-when{ font-family:var(--font-mono); font-size:.72rem; color:var(--green); text-transform:uppercase; letter-spacing:.05em; }
+.tl-item h4{ margin-top:4px; font-size:1.05rem; }
+.tl-item p{ margin-top:6px; color:var(--ink-soft); font-size:.93rem; max-width:56ch; }
+.section-dark .tl-item p{ color:rgba(255,255,255,.75); }
+
+/* ---------- table ---------- */
+.tbl-wrap{ overflow-x:auto; border:1px solid var(--line-soft); border-radius:var(--radius-md); }
+table{ width:100%; border-collapse:collapse; font-size:.92rem; }
+th,td{ text-align:left; padding:14px 18px; border-bottom:1px solid var(--line-soft); }
+th{ font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); background:var(--bg-alt); }
+tr:last-child td{ border-bottom:none; }
+
+/* ---------- dofa ---------- */
+.dofa{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.dofa-box{ border-radius:var(--radius-md); padding:24px; }
+.dofa-box h4{ font-family:var(--font-mono); font-size:.75rem; text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; }
+.dofa-box p{ font-size:.92rem; color:var(--ink-soft); }
+.dofa-f{ background:#E4F1E8; }
+.dofa-o{ background:#E2EEF0; }
+.dofa-d{ background:#FBEDE6; }
+.dofa-a{ background:#F6E9EA; }
+.dofa-f h4{ color:var(--green-deep); }
+.dofa-o h4{ color:var(--petrol); }
+.dofa-d h4{ color:var(--coral); }
+.dofa-a h4{ color:#B23A3A; }
+
+/* ---------- org chart ---------- */
+.org{ display:flex; flex-direction:column; align-items:center; gap:14px; }
+.org-node{
+  background:var(--panel); border:1px solid var(--line-soft); border-radius:12px;
+  padding:14px 22px; font-weight:600; font-size:.92rem; text-align:center;
+}
+.org-node.lead{ background:var(--green-deep); color:#fff; }
+.org-branch{ width:1px; height:20px; background:var(--line); }
+.org-row{ display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
+
+/* ---------- quote ---------- */
+.pull-quote{
+  font-family:var(--font-accent); font-style:italic;
+  font-size:clamp(1.3rem,2.4vw,1.8rem);
+  color:var(--green-deep);
+  max-width:60ch;
+  line-height:1.4;
+}
+
+/* ---------- footer ---------- */
+.site-footer{
+  background:var(--green-deep); color:rgba(255,255,255,.85);
+  padding:52px 0 30px;
+}
+.footer-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px; }
+.footer-grid h4{ color:#fff; font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; margin-bottom:14px; }
+.footer-grid a{ display:block; padding:5px 0; color:rgba(255,255,255,.7); font-size:.92rem; }
+.footer-grid a:hover{ color:#fff; }
+.footer-bottom{
+  margin-top:40px; padding-top:22px; border-top:1px solid rgba(255,255,255,.14);
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  font-size:.82rem; color:rgba(255,255,255,.55);
+}
+
+/* ---------- page hero (subsecciones) ---------- */
+.page-hero{ padding:56px 0 48px; }
+.page-hero .eyebrow{ margin-bottom:14px; }
+.page-hero h1{ font-size:clamp(2rem,4vw,2.9rem); }
+.page-hero p{ margin-top:16px; max-width:60ch; color:var(--ink-soft); font-size:1.04rem; }
+
+/* ---------- separador entre "páginas" internas ---------- */
+.page-divider{
+  border:none; border-top:1px solid var(--line); margin:0;
+}
+
+/* ---------- reveal on scroll ---------- */
+.reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
+.reveal.in{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion: reduce){
+  .reveal{ opacity:1; transform:none; transition:none; }
+  html{ scroll-behavior:auto; }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px){
+  .hero-grid{ grid-template-columns:1fr; }
+  .hero-grid .hero-visual{ order:-1; }
+  .grid-2, .grid-3, .grid-4{ grid-template-columns:1fr 1fr; }
+  .footer-grid{ grid-template-columns:1fr; }
+  .dofa{ grid-template-columns:1fr; }
+}
+@media (max-width: 640px){
+  .nav-links{
+    position:fixed; inset:64px 16px auto 16px;
+    background:var(--panel); border:1px solid var(--line-soft);
+    border-radius:var(--radius-md); padding:10px;
+    flex-direction:column; align-items:stretch;
+    box-shadow:0 20px 40px -12px rgba(16,38,31,.2);
+    display:none;
+  }
+  .nav-links.open{ display:flex; }
+  .nav-links a{ padding:12px 14px; }
+  .nav-toggle{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:40px; height:40px; border-radius:10px; border:1px solid var(--line);
+    background:transparent; cursor:pointer;
+  }
+  .nav-toggle span{ display:block; width:16px; height:2px; background:var(--ink); position:relative; }
+  .nav-toggle span::before,.nav-toggle span::after{ content:""; position:absolute; left:0; width:16px; height:2px; background:var(--ink); }
+  .nav-toggle span::before{ top:-5px; } .nav-toggle span::after{ top:5px; }
+  .grid-2, .grid-3, .grid-4{ grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a href="#inicio" class="brand"><span class="brand-mark"></span> NutriAmigo</a>
+    <button class="nav-toggle" aria-label="Abrir menú"><span></span></button>
+    <nav class="nav-links">
+      <a href="#inicio">Inicio</a>
+      <a href="#empresa">La empresa</a>
+      <a href="#proyecto">El proyecto</a>
+      <a href="#ejecucion">Plan de ejecución</a>
+      <a href="#viabilidad">Viabilidad</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ================================================================ -->
+<!-- INICIO                                                            -->
+<!-- ================================================================ -->
+<section class="hero" id="inicio">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">HealthTech · Yopal, Casanare · 2026</span>
+      <h1>Tu salud, <span class="accent">en la palma</span> de tu mano.</h1>
+      <p class="lede">NutriAmigo es una aplicación móvil que diseña planes de nutrición y rutinas físicas personalizadas con inteligencia artificial, para que cuidar tu cuerpo deje de depender de tu presupuesto o tu ciudad.</p>
+      <div class="hero-cta">
+        <a href="#proyecto" class="btn btn-primary">Conocer el proyecto</a>
+        <a href="#empresa" class="btn btn-ghost">Conocer la empresa</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone">
+        <div class="phone-screen">
+          <div>
+            <div class="ps-greeting">Hoy, martes</div>
+            <div class="ps-title">Hola, Andrés 👋</div>
+          </div>
+          <div class="ps-ring">
+            <div class="ps-ring-inner"><b>70%</b><span>meta diaria</span></div>
+          </div>
+          <div class="ps-card"><b>Plan de almuerzo</b><span>Generado por IA</span></div>
+          <div class="ps-card"><b>Rutina de hoy</b><span>32 min</span></div>
+          <div class="ps-dot-row">
+            <span class="ps-dot on"></span><span class="ps-dot"></span><span class="ps-dot"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Por qué existe NutriAmigo</span>
+      <h2>Cuidar tu salud no debería ser un lujo.</h2>
+      <p>La mala alimentación y la falta de orientación profesional crecen cada año. Acceder a un nutricionista o entrenador particular implica costos y desplazamientos que no todos pueden asumir.</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card reveal">
+        <span class="num">01</span>
+        <h3>El problema</h3>
+        <p>Obesidad, desnutrición y sedentarismo crecen mientras el acompañamiento profesional sigue siendo costoso y de difícil acceso.</p>
+      </div>
+      <div class="card reveal">
+        <span class="num">02</span>
+        <h3>La oportunidad</h3>
+        <p>El sector de la salud digital crece junto al uso masivo de dispositivos móviles, abriendo espacio para soluciones accesibles.</p>
+      </div>
+      <div class="card reveal">
+        <span class="num">03</span>
+        <h3>La diferencia</h3>
+        <p>Personalización real con IA, comunidad motivacional y alianzas con nutricionistas, gimnasios e influenciadores fitness.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Cómo funciona</span>
+      <h2>Del registro al progreso, todo en un mismo lugar.</h2>
+      <p>Una experiencia simple, pensada para que cualquier persona —sin importar su ciudad o su presupuesto— reciba asesoría real.</p>
+    </div>
+    <div class="grid grid-4">
+      <div class="card reveal"><span class="num">Registro</span><h3>Cuéntale a la app</h3><p>Datos, objetivos y preferencias alimenticias del usuario.</p></div>
+      <div class="card reveal"><span class="num">Generación</span><h3>La IA arma tu plan</h3><p>Rutina física y plan nutricional adaptados a tu condición.</p></div>
+      <div class="card reveal"><span class="num">Seguimiento</span><h3>Progreso continuo</h3><p>La app monitorea avances y recoge retroalimentación.</p></div>
+      <div class="card reveal"><span class="num">Ajuste</span><h3>Mejora constante</h3><p>Las recomendaciones se actualizan según tus resultados.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">El proyecto en cifras</span>
+      <h2>Un plan de empresa pensado con rigor.</h2>
+    </div>
+    <div class="grid grid-4">
+      <div class="stat reveal"><b>7</b><span>Fases de ejecución</span><small>De la investigación al escalamiento</small></div>
+      <div class="stat reveal"><b>3</b><span>Integrantes fundadores</span><small>Dirección, diseño y desarrollo</small></div>
+      <div class="stat reveal"><b>1.6K</b><span>Usuarios premium</span><small>Punto de equilibrio proyectado</small></div>
+      <div class="stat reveal"><b>2030</b><span>Meta de visión</span><small>Líder en Latinoamérica</small></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="grid grid-2 reveal" style="align-items:center;">
+      <p class="pull-quote">"Diseñar una app que lleve el acompañamiento nutricional y físico hasta el celular de cualquier persona, sin importar en qué ciudad o país se encuentre."</p>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-start;">
+        <a href="#ejecucion" class="btn btn-primary">Ver plan de ejecución</a>
+        <a href="#viabilidad" class="btn btn-ghost">Ver viabilidad financiera</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="page-divider">
+
+<!-- ================================================================ -->
+<!-- LA EMPRESA                                                        -->
+<!-- ================================================================ -->
+<section class="page-hero" id="empresa">
+  <div class="container">
+    <span class="eyebrow">Quiénes somos</span>
+    <h1>Una empresa nacida en el aula, con vocación de salud digital.</h1>
+    <p>NutriAmigo nació en 2025, en el Taller de Emprendimiento de la modalidad Técnicos en Sistemas de la Institución Educativa Bosques de Sirivana, de la mano de un equipo que quiso juntar tecnología y bienestar.</p>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="container grid grid-2 reveal" style="align-items:start;">
+    <div>
+      <span class="eyebrow">Nuestra historia</span>
+      <h2 style="margin-top:12px;">De una observación cotidiana a un plan de empresa.</h2>
+    </div>
+    <p style="font-size:1.02rem; color:var(--ink-soft);">Todo empezó al notar algo que pasa muy seguido alrededor nuestro: muchos adolescentes y adultos jóvenes quieren cuidar su alimentación y mantenerse activos, pero no cuentan con acceso fácil ni económico a un profesional que los oriente. Eso termina traduciéndose en malos hábitos, sedentarismo y problemas de salud que se podrían prevenir. A partir de esa observación, el equipo se propuso diseñar una aplicación móvil que llevara ese acompañamiento —apoyado en inteligencia artificial— hasta el celular de cualquier persona, sin importar en qué ciudad o país se encuentre.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Identidad corporativa</span>
+      <h2>Misión, visión y valores</h2>
+    </div>
+    <div class="grid grid-2">
+      <div class="card reveal">
+        <h3>Misión</h3>
+        <p>Brindar asesoría nutricional y física personalizada a través de una aplicación móvil accesible, confiable y adaptada a las necesidades de cada usuario, promoviendo hábitos de vida saludables mediante innovación tecnológica.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Visión</h3>
+        <p>Para 2030, ser la aplicación líder en Latinoamérica en servicios digitales de nutrición y fitness, reconocida por la calidad de su asesoría, su capacidad de innovar y su compromiso genuino con la salud de la comunidad.</p>
+      </div>
+    </div>
+    <div class="grid grid-3" style="margin-top:22px;">
+      <div class="card reveal"><h3>Innovación</h3><p>Incorporar de forma constante la tecnología y la IA al servicio de la salud.</p></div>
+      <div class="card reveal"><h3>Compromiso</h3><p>Con la salud y el bienestar real de cada usuario.</p></div>
+      <div class="card reveal"><h3>Responsabilidad social</h3><p>Frente a las problemáticas de alimentación y sedentarismo.</p></div>
+      <div class="card reveal"><h3>Ética y transparencia</h3><p>En el manejo de la información personal de los usuarios.</p></div>
+      <div class="card reveal"><h3>Trabajo en equipo</h3><p>Colaboración interdisciplinaria entre todas las áreas.</p></div>
+      <div class="card reveal"><h3>Orientación al usuario</h3><p>Su experiencia y sus resultados, siempre primero.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="container grid grid-2 reveal" style="align-items:center;">
+    <div>
+      <span class="eyebrow">Constitución</span>
+      <h2 style="margin-top:12px;">S.A.S., dentro del sector HealthTech.</h2>
+      <p style="margin-top:14px; color:var(--ink-soft);">Para efectos de este ejercicio académico, NutriAmigo se plantea como una empresa ficticia constituida bajo la figura de Sociedad por Acciones Simplificada, dentro del sector de la tecnología aplicada a la salud. Esta figura facilita la vinculación de nuevos socios, simplifica los trámites de constitución y permite limitar la responsabilidad de los fundadores al monto de sus aportes.</p>
+    </div>
+    <div class="card">
+      <span class="num">Ficha</span>
+      <h3>NutriAmigo S.A.S.</h3>
+      <p><b>Sector:</b> HealthTech<br><b>Figura:</b> Sociedad por Acciones Simplificada<br><b>Sede:</b> Yopal, Casanare<br><b>Eslogan:</b> "Tu salud en la palma de tu mano"</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Estructura interna</span>
+      <h2>Organigrama</h2>
+      <p>Una estructura horizontal y funcional: la Dirección General articula cinco áreas de trabajo, lo que agiliza la comunicación y mantiene las decisiones centradas en el usuario final.</p>
+    </div>
+    <div class="org reveal">
+      <div class="org-node lead">Dirección General</div>
+      <div class="org-branch"></div>
+      <div class="org-row">
+        <div class="org-node">Nutricionistas</div>
+        <div class="org-node">Desarrollo y programación</div>
+        <div class="org-node">Diseño UX/UI</div>
+        <div class="org-node">Marketing digital</div>
+        <div class="org-node">Soporte técnico</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Equipo fundador</span>
+      <h2>Las personas detrás de NutriAmigo</h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="card reveal" style="background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14);">
+        <h3 style="color:#fff;">Andrés Felipe Fajardo Neita</h3>
+        <p style="color:rgba(255,255,255,.72);">Dirección General y Líder de Proyecto.</p>
+      </div>
+      <div class="card reveal" style="background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14);">
+        <h3 style="color:#fff;">Nicolás Alejandro Álvarez Cruz</h3>
+        <p style="color:rgba(255,255,255,.72);">Diseño UX/UI y Marketing Digital.</p>
+      </div>
+      <div class="card reveal" style="background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14);">
+        <h3 style="color:#fff;">Nicolás Alejandro Blanco</h3>
+        <p style="color:rgba(255,255,255,.72);">Desarrollo y Programación.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="page-divider">
+
+<!-- ================================================================ -->
+<!-- EL PROYECTO                                                       -->
+<!-- ================================================================ -->
+<section class="page-hero" id="proyecto">
+  <div class="container">
+    <span class="eyebrow">Producto tecnológico</span>
+    <h1>Una app que convierte datos personales en un plan de vida saludable.</h1>
+    <p>Disponible para Android e iOS: a través de un registro sencillo, NutriAmigo recopila datos, objetivos y preferencias del usuario y, mediante inteligencia artificial, genera planes de alimentación y rutinas de ejercicio adaptados a su condición particular.</p>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="container grid grid-2 reveal" style="align-items:start;">
+    <div>
+      <span class="eyebrow">Contexto</span>
+      <h2 style="margin-top:12px;">El problema que resolvemos</h2>
+    </div>
+    <div>
+      <p style="color:var(--ink-soft); font-size:1.02rem;">La mala alimentación, la obesidad, la desnutrición y la falta de orientación profesional en temas de salud crecen cada vez más. Acceder a un nutricionista o a un entrenador físico particular suele implicar costos altos y desplazamientos que no todas las personas pueden asumir, dejando a buena parte de la población sin ningún acompañamiento profesional para mejorar sus hábitos.</p>
+      <p style="color:var(--ink-soft); font-size:1.02rem; margin-top:14px;">NutriAmigo opera en el sector de la salud digital, un campo en expansión que combina la tecnología móvil con servicios que tradicionalmente se prestaban de forma presencial. Aplicaciones como MyFitnessPal y Fitia confirman que la demanda es real, y dejan ver la oportunidad de diferenciarse mediante personalización con IA, comunidad motivacional y alianzas estratégicas.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Hacia dónde vamos</span>
+      <h2>Objetivo general y específicos</h2>
+      <p>Diseñar y consolidar una aplicación móvil que promueva hábitos alimenticios saludables y brinde apoyo nutricional y físico diario mediante inteligencia artificial.</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card reveal"><span class="num">01</span><h3>Investigar necesidades reales</h3><p>De los usuarios, en materia de nutrición y actividad física.</p></div>
+      <div class="card reveal"><span class="num">02</span><h3>Modelo de negocio sostenible</h3><p>Basado en suscripciones y servicios premium.</p></div>
+      <div class="card reveal"><span class="num">03</span><h3>Seguridad de los datos</h3><p>Garantizar la privacidad de la información personal.</p></div>
+      <div class="card reveal"><span class="num">04</span><h3>Alianzas estratégicas</h3><p>Con gimnasios, nutricionistas e influenciadores fitness.</p></div>
+      <div class="card reveal"><span class="num">05</span><h3>Marketing digital</h3><p>Estrategias para captar y fidelizar usuarios.</p></div>
+      <div class="card reveal"><span class="num">06</span><h3>Público objetivo claro</h3><p>Adolescentes y adultos que buscan acompañamiento accesible.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Funcionamiento técnico</span>
+      <h2>Del registro a la mejora continua</h2>
+    </div>
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <span class="tl-when">Paso 1</span>
+        <h4>Registro</h4>
+        <p>El usuario ingresa sus datos personales, objetivos y preferencias alimenticias y físicas.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-when">Paso 2</span>
+        <h4>Generación con IA</h4>
+        <p>El motor de inteligencia artificial genera automáticamente un plan de nutrición y una rutina de entrenamiento personalizados.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-when">Paso 3</span>
+        <h4>Seguimiento</h4>
+        <p>La aplicación hace seguimiento continuo del progreso del usuario y recoge su retroalimentación.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-when">Paso 4</span>
+        <h4>Actualización</h4>
+        <p>Las rutinas y consejos se actualizan constantemente, apoyados en soporte técnico y comunidad activa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Stack propuesto</span>
+      <h2>Herramientas, lenguajes y plataformas</h2>
+      <p>Una propuesta técnica inicial, ajustable según las capacidades del equipo de desarrollo.</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card reveal"><h3>Frontend</h3><p>Flutter, para un único código base multiplataforma en Android e iOS.</p></div>
+      <div class="card reveal"><h3>Backend e IA</h3><p>Python, con frameworks como Django o FastAPI para el motor de recomendaciones.</p></div>
+      <div class="card reveal"><h3>Base de datos</h3><p>PostgreSQL o Firebase, según necesidades de escalabilidad.</p></div>
+      <div class="card reveal"><h3>Infraestructura</h3><p>Servidores multinube (AWS o Azure) para disponibilidad y seguridad.</p></div>
+      <div class="card reveal"><h3>Diseño</h3><p>Figma para la interfaz y la experiencia de usuario.</p></div>
+      <div class="card reveal"><h3>Control de versiones</h3><p>Git y GitHub para el trabajo colaborativo del equipo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="container grid grid-2 reveal">
+    <div class="card">
+      <span class="eyebrow">Innovación y valor agregado</span>
+      <h3 style="margin-top:12px;">Lo que nos diferencia</h3>
+      <p>Recomendaciones individualizadas con IA, una comunidad motivacional que favorece la constancia, un módulo de seguimiento del progreso y un diseño amigable que simplifica la experiencia de uso.</p>
+    </div>
+    <div class="card">
+      <span class="eyebrow">Público objetivo</span>
+      <h3 style="margin-top:12px;">A quién le hablamos</h3>
+      <p>Adolescentes y adultos interesados en mejorar su salud y condición física, incluyendo personas con obesidad, bajo peso o hábitos alimenticios inadecuados que buscan un acompañamiento accesible y constante.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="page-divider">
+
+<!-- ================================================================ -->
+<!-- PLAN DE EJECUCIÓN                                                 -->
+<!-- ================================================================ -->
+<section class="page-hero" id="ejecucion">
+  <div class="container">
+    <span class="eyebrow">Hoja de ruta</span>
+    <h1>Siete fases, de la idea al escalamiento.</h1>
+    <p>La ejecución de NutriAmigo se plantea en fases secuenciales: cada una construye sobre la anterior, desde la validación con usuarios reales hasta el seguimiento continuo del producto en el mercado.</p>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Cronograma</span>
+      <h2>Línea de tiempo del proyecto</h2>
+    </div>
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <span class="tl-when">Mes 1 – Mes 2</span>
+        <h4>Fase 1 · Investigación y validación de la idea</h4>
+        <p>Con usuarios potenciales, para confirmar el problema y afinar la propuesta.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-when">Mes 2 – Mes 3</span>
+        <h4>Fase 2 · Diseño UX/UI y de marca</h4>
+        <p>Experiencia de usuario e identidad visual de NutriAmigo.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-when">Mes 3 – Mes 5</span>
+        <h4>Fase 3 · Backend, base de datos y motor de IA</h4>
+        <p>El núcleo técnico encargado de generar los planes personalizados.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-when">Mes 4 – Mes 6</span>
+        <h4>Fase 4 · Desarrollo de la aplicación móvil</h4>
+        <p>Construcción del frontend para Android e iOS.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-when">Mes 6 – Mes 7</span>
+        <h4>Fase 5 · Pruebas internas y ajustes</h4>
+        <p>Corrección de errores antes de exponer el producto a usuarios reales.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-when">Mes 7 – Mes 8</span>
+        <h4>Fase 6 · Lanzamiento piloto y marketing digital</h4>
+        <p>Primeras estrategias para captar a los primeros usuarios.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-when">Mes 8 en adelante</span>
+        <h4>Fase 7 · Seguimiento y escalamiento</h4>
+        <p>Recolección de retroalimentación y crecimiento continuo del producto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Recursos asignados</span>
+      <h2>Personal, equipos y tecnología</h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="card reveal">
+        <h3>Personal</h3>
+        <p>Nutricionistas, programadores, diseñador UX/UI, equipo de marketing digital y soporte técnico.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Recursos técnicos</h3>
+        <p>Servidores multinube, licencias de software, registro de dominios y equipos de cómputo para el desarrollo.</p>
+      </div>
+      <div class="card reveal">
+        <h3>Equipos</h3>
+        <p>Computadores para el equipo de desarrollo y diseño, y dispositivos móviles de prueba en distintos sistemas operativos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Beneficios e impacto</span>
+      <h2>Para quién trabaja NutriAmigo</h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="card reveal" style="background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14);">
+        <h3 style="color:#fff;">Para los usuarios</h3>
+        <p style="color:rgba(255,255,255,.72);">Asesoría personalizada desde el celular, seguimiento constante y comunidad motivacional, a un costo menor que una asesoría presencial.</p>
+      </div>
+      <div class="card reveal" style="background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14);">
+        <h3 style="color:#fff;">Para la empresa</h3>
+        <p style="color:rgba(255,255,255,.72);">Posicionamiento como referente en nutrición y fitness digital en Latinoamérica, con ingresos diversificados y escalables.</p>
+      </div>
+      <div class="card reveal" style="background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14);">
+        <h3 style="color:#fff;">Para la comunidad</h3>
+        <p style="color:rgba(255,255,255,.72);">Hábitos saludables más accesibles y un servicio 100% digital que reduce el impacto de la asesoría presencial.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="page-divider">
+
+<!-- ================================================================ -->
+<!-- VIABILIDAD                                                        -->
+<!-- ================================================================ -->
+<section class="page-hero" id="viabilidad">
+  <div class="container">
+    <span class="eyebrow">Números y análisis</span>
+    <h1>Un plan financiero pensado desde el primer peso.</h1>
+    <p>Inversión inicial, fuentes de financiación, punto de equilibrio y análisis DOFA: la base con la que NutriAmigo sustenta su viabilidad como empresa.</p>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="container">
+    <div class="grid grid-4 reveal">
+      <div class="stat"><b>$65M</b><span>Inversión inicial (COP)</span><small>Servidores, equipos y publicidad inicial</small></div>
+      <div class="stat"><b>$62M</b><span>Costo mensual (COP)</span><small>Equipo humano, marketing y soporte</small></div>
+      <div class="stat"><b>$437M</b><span>Requerimiento a 6 meses (COP)</span><small>Inversión inicial + costos acumulados</small></div>
+      <div class="stat"><b>1.6K</b><span>Usuarios premium</span><small>Punto de equilibrio mensual proyectado</small></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container grid grid-2 reveal" style="align-items:center;">
+    <div>
+      <span class="eyebrow">Fuentes de financiación</span>
+      <h2 style="margin-top:12px;">Dos frentes, un mismo riesgo compartido</h2>
+      <p style="margin-top:14px; color:var(--ink-soft);">La financiación del proyecto se plantea distribuyendo el riesgo inicial entre los socios fundadores e inversionistas del sector de la salud digital, fortaleciendo la capacidad de inversión desde la etapa temprana.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Fuente</th><th>Participación</th></tr></thead>
+        <tbody>
+          <tr><td>Aportes de los socios fundadores</td><td>60%</td></tr>
+          <tr><td>Inversionistas internacionales (salud digital)</td><td>40%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section-alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Análisis estratégico</span>
+      <h2>Matriz DOFA</h2>
+    </div>
+    <div class="dofa reveal">
+      <div class="dofa-box dofa-f">
+        <h4>Fortalezas</h4>
+        <p>Plataforma accesible, asesoría personalizada mediante IA, diseño amigable y planes adaptados a cada usuario.</p>
+      </div>
+      <div class="dofa-box dofa-o">
+        <h4>Oportunidades</h4>
+        <p>Tendencia creciente hacia la vida saludable, uso masivo de aplicaciones móviles y posibilidad de alianzas estratégicas.</p>
+      </div>
+      <div class="dofa-box dofa-d">
+        <h4>Debilidades</h4>
+        <p>Baja visibilidad inicial de la marca, recursos limitados para publicidad y comunidad de usuarios todavía pequeña.</p>
+      </div>
+      <div class="dofa-box dofa-a">
+        <h4>Amenazas</h4>
+        <p>Alta competencia de aplicaciones consolidadas, cambios en políticas de redes sociales y desconfianza inicial de usuarios.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Resultados del ejercicio académico</span>
+      <h2>Logros obtenidos</h2>
+      <p>Como NutriAmigo corresponde a un ejercicio académico de planeación empresarial, estos son los logros del proceso de diseño y planeación, no cifras de operación real.</p>
+    </div>
+    <div class="card reveal">
+      <p>El equipo logró definir por completo la identidad de la empresa —misión, visión, valores, logotipo y eslogan—, construir el modelo de negocio bajo la metodología Canvas, elaborar un análisis DOFA de la propuesta y estructurar un plan financiero con proyecciones de inversión, costos y punto de equilibrio.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-dark">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Qué sigue</span>
+      <h2>Próximos pasos</h2>
+    </div>
+    <div class="grid grid-4">
+      <div class="card reveal" style="background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14);"><h3 style="color:#fff; font-size:1rem;">Desarrollar un MVP</h3><p style="color:rgba(255,255,255,.72); font-size:.9rem;">Prototipo funcional para pruebas con usuarios reales.</p></div>
+      <div class="card reveal" style="background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14);"><h3 style="color:#fff; font-size:1rem;">Validar el modelo de negocio</h3><p style="color:rgba(255,255,255,.72); font-size:.9rem;">Con una muestra representativa del público objetivo.</p></div>
+      <div class="card reveal" style="background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14);"><h3 style="color:#fff; font-size:1rem;">Formalizar alianzas</h3><p style="color:rgba(255,255,255,.72); font-size:.9rem;">Con nutricionistas, gimnasios e influenciadores del sector.</p></div>
+      <div class="card reveal" style="background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14);"><h3 style="color:#fff; font-size:1rem;">Gestionar financiación</h3><p style="color:rgba(255,255,255,.72); font-size:.9rem;">Activar las fuentes identificadas para iniciar el desarrollo técnico.</p></div>
+    </div>
+    <p class="pull-quote" style="color:#fff; margin-top:40px;">"Una invitación abierta a aliados estratégicos, nutricionistas, entrenadores e inversionistas interesados en la salud digital."</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a href="#inicio" class="brand" style="color:#fff; margin-bottom:12px; display:inline-flex;"><span class="brand-mark"></span> NutriAmigo</a>
+      <p style="color:rgba(255,255,255,.7); font-size:.92rem; max-width:34ch; margin-top:10px;">Asesoría nutricional y física personalizada mediante inteligencia artificial. Proyecto de creación de empresa — I.E. Bosques de Sirivana.</p>
+    </div>
+    <div>
+      <h4>Sitio</h4>
+      <a href="#empresa">La empresa</a>
+      <a href="#proyecto">El proyecto</a>
+      <a href="#ejecucion">Plan de ejecución</a>
+      <a href="#viabilidad">Viabilidad</a>
+    </div>
+    <div>
+      <h4>Institución</h4>
+      <a href="#">I.E. Bosques de Sirivana</a>
+      <a href="#">Técnicos en Sistemas — Grado 11°</a>
+      <a href="#">Yopal, Casanare</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 NutriAmigo S.A.S. — Proyecto académico.</span>
+    <span>Fajardo Neita · Álvarez Cruz · Blanco</span>
+  </div>
+</footer>
+
+<script>
+// NutriAmigo — interacciones (menú móvil, scroll-reveal, resaltado de sección activa)
+document.addEventListener('DOMContentLoaded', function () {
+  var toggle = document.querySelector('.nav-toggle');
+  var links = document.querySelector('.nav-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', function () {
+      links.classList.toggle('open');
+    });
+    links.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { links.classList.remove('open'); });
+    });
+  }
+
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && revealEls.length) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  // Resaltar el enlace de la sección visible en el menú
+  var navLinks = document.querySelectorAll('.nav-links a');
+  var sections = ['inicio','empresa','proyecto','ejecucion','viabilidad']
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+  if ('IntersectionObserver' in window && sections.length) {
+    var navIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.getAttribute('id');
+          navLinks.forEach(function (a) {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(function (s) { navIo.observe(s); });
+  }
+});
+</script>
+</body>
+</html>
