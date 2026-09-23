@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<script>try{
+  var temaGuardado = localStorage.getItem("nutriamigo_theme");
+  if (!temaGuardado) {
+    var hora = new Date().getHours();
+    temaGuardado = (hora >= 19 || hora < 7) ? "oscuro" : "claro"; // solo si el usuario nunca eligió manualmente
+  }
+  document.documentElement.setAttribute("data-theme", temaGuardado);
+}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriAmigo — Tu salud en la palma de tu mano</title>
+<link rel="icon" href="./assets/logo.png" type="image/png">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#2ea877">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/styles.css">
+<link rel="stylesheet" href="./css/chat.css">
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#inicio" class="nav-brand">
+      <img src="./assets/logo.png" alt="NutriAmigo" class="nav-logo">
+      <span>NutriAmigo</span>
+    </a>
+    <div class="nav-links">
+      <a href="#inicio" class="nav-link" data-section="inicio">Inicio</a>
+      <a href="#como-funciona" class="nav-link" data-section="como-funciona">Cómo funciona</a>
+      <a href="#historia" class="nav-link" data-section="historia">Nuestra historia</a>
+      <a href="./premium.html" class="nav-link">Premium</a>
+    </div>
+    <a href="./auth/google" class="nav-cta">Continuar con Google</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Abrir menú"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-mobile" id="navMobile">
+    <a href="#inicio" data-section="inicio">Inicio</a>
+    <a href="#como-funciona" data-section="como-funciona">Cómo funciona</a>
+    <a href="#historia" data-section="historia">Nuestra historia</a>
+    <a href="./premium.html">Premium</a>
+    <a href="./auth/google">Continuar con Google</a>
+  </div>
+</nav>
+
+<section id="inicio" class="section hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow">Nutrición y entrenamiento con inteligencia artificial</p>
+      <h1>Un plan de alimentación<br>y ejercicio, hecho<br>a tu medida.</h1>
+      <p class="hero-sub">NutriAmigo convierte tu objetivo en un plan semanal de comidas y rutinas, con seguimiento de tu progreso y una comunidad que te acompaña.</p>
+      <div class="hero-actions">
+        <a href="./auth/google" class="btn btn-google">
+          <img src="https://www.google.com/favicon.ico" alt="">
+          Continuar con Google
+        </a>
+        <a href="#historia" class="btn btn-ghost">Conocer el proyecto</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>3</strong><span>objetivos: definir, mantener, aumentar volumen</span></div>
+        <div class="stat"><strong>7</strong><span>días de plan de comidas y entrenamiento</span></div>
+        <div class="stat"><strong>24/7</strong><span>comunidad y acompañamiento</span></div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="mini-app-header">
+            <img src="./assets/logo.png" alt="">
+            <span>NutriAmigo</span>
+          </div>
+          <div class="mini-card">
+            <span class="mini-label">Objetivo</span>
+            <strong>Aumentar volumen</strong>
+          </div>
+          <div class="mini-bars">
+            <div class="mini-bar" style="--h:38%"></div>
+            <div class="mini-bar" style="--h:62%"></div>
+            <div class="mini-bar" style="--h:80%"></div>
+            <div class="mini-bar" style="--h:55%"></div>
+            <div class="mini-bar" style="--h:90%"></div>
+          </div>
+          <div class="mini-card">
+            <span class="mini-label">Meta calórica de hoy</span>
+            <strong>2 480 kcal</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <div class="offer">
+    <h2>Lo que le ofrecemos a cada usuario</h2>
+    <div class="offer-grid">
+      <article class="offer-card">
+        <div class="offer-icon">🍽️</div>
+        <h3>Plan de alimentación semanal</h3>
+        <p>Comidas organizadas día por día, con opciones para personalizar según tus preferencias.</p>
+      </article>
+      <article class="offer-card">
+        <div class="offer-icon">🏋️</div>
+        <h3>Rutina de ejercicio a tu ritmo</h3>
+        <p>Entrenamientos pensados para definir, mantener o ganar volumen, con seguimiento continuo.</p>
+      </article>
+      <article class="offer-card">
+        <div class="offer-icon">🔥</div>
+        <h3>Racha de constancia</h3>
+        <p>Un contador de días activos que te motiva a no perder el ritmo, como en tus apps favoritas.</p>
+      </article>
+      <article class="offer-card">
+        <div class="offer-icon">💬</div>
+        <h3>Comunidad global</h3>
+        <p>Chat en vivo por país y una sala global, con traducción automática de mensajes.</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <div class="how" id="como-funciona">
+    <p class="eyebrow">Así funciona por dentro</p>
+    <h2>Cuatro pasos para tener tu plan activo</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-step">1</div>
+        <h3>Inicia sesión con Google</h3>
+        <p>Sin formularios largos ni contraseñas nuevas que recordar.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-step">2</div>
+        <h3>Cuéntanos tus datos</h3>
+        <p>Peso, altura, género, edad y nivel de actividad — la base de todo lo demás.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-step">3</div>
+        <h3>Recibe tu resultado</h3>
+        <p>Tu índice de masa corporal, tu meta calórica diaria y tu porcentaje de proteína, carbohidratos y grasas.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-step">4</div>
+        <h3>Sigue tu plan y personalízalo</h3>
+        <p>Un plan de comidas y de ejercicio para toda la semana, con personalización avanzada en Premium.</p>
+      </div>
+    </div>
+    <div class="how-cta">
+      <a href="./auth/google" class="btn btn-primary">Crear mi plan gratis</a>
+      <a href="./premium.html" class="btn btn-ghost">Ver Premium</a>
+    </div>
+  </div>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <div class="community">
+    <p class="eyebrow">Comunidad NutriAmigo</p>
+    <h2>Constancia acompañada, no soledad frente al celular</h2>
+    <p class="section-sub">Perfiles representativos de cómo distintos usuarios usarían NutriAmigo — ilustran el tipo de acompañamiento que la comunidad busca ofrecer en esta etapa de planeación del proyecto.</p>
+    <div class="community-grid">
+      <article class="testimonial-card">
+        <p class="testimonial-quote">"Empecé con 'Definir' sin saber ni por dónde arrancar. Lo que más se siente es no estar solo revisando si comí bien o no."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MJ</div>
+          <div><strong>María José, 22 años</strong><span>Objetivo: Definir</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card">
+        <p class="testimonial-quote">"Nunca había podido pagar un entrenador. Con el plan de volumen y la rutina semanal por fin tengo una guía clara que seguir."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">DR</div>
+          <div><strong>Daniel Rojas, 19 años</strong><span>Objetivo: Aumentar volumen</span></div>
+        </div>
+      </article>
+      <article class="testimonial-card">
+        <p class="testimonial-quote">"Uso 'Mantener' desde hace semanas. La racha y el chat de la comunidad me ayudan a no perder la constancia."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">LP</div>
+          <div><strong>Laura Peña, 27 años</strong><span>Objetivo: Mantener</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="historia" class="section historia">
+  <div class="historia-inner">
+    <p class="eyebrow">Quiénes somos</p>
+    <h2>La historia detrás de NutriAmigo</h2>
+    <p class="section-sub historia-lead">NutriAmigo nació en 2025 en el Taller de Emprendimiento de la modalidad Técnicos en Sistemas de la Institución Educativa Bosques de Sirivana, cuando un grupo de estudiantes decidió unir la tecnología con el bienestar de las personas. Notamos algo que pasa muy seguido: muchos adolescentes y adultos jóvenes quieren cuidar su alimentación y mantenerse activos, pero no tienen acceso fácil ni económico a un profesional que los oriente. De ahí surgió la idea de llevar ese acompañamiento nutricional y físico, apoyado en tecnología, al celular de cualquier persona.</p>
+
+    <div class="mv-grid">
+      <div class="mv-card">
+        <h3>Misión</h3>
+        <p>Brindar asesoría nutricional y física personalizada a través de una aplicación móvil accesible, confiable y adaptada a las necesidades de cada usuario, promoviendo hábitos de vida saludables mediante innovación tecnológica.</p>
+      </div>
+      <div class="mv-card">
+        <h3>Visión</h3>
+        <p>Para 2030, ser la aplicación líder en Latinoamérica en servicios digitales de nutrición y fitness, reconocida por la calidad de su asesoría, su capacidad de innovar y su compromiso genuino con la salud de la comunidad.</p>
+      </div>
+    </div>
+
+    <div class="values-block">
+      <h3>Nuestros valores</h3>
+      <div class="values-grid">
+        <span>Innovación</span><span>Compromiso con la salud</span><span>Responsabilidad social</span>
+        <span>Ética y transparencia</span><span>Trabajo en equipo</span><span>Orientación al usuario</span>
+      </div>
+    </div>
+
+    <div class="founders-block">
+      <h3>Fundadores</h3>
+      <div class="founders-grid">
+        <article class="founder-card">
+          <div class="founder-avatar">AF</div>
+          <h4>Andrés Felipe Fajardo Neita</h4>
+          <p>Dirección General y Líder de Proyecto</p>
+        </article>
+        <article class="founder-card">
+          <div class="founder-avatar">NA</div>
+          <h4>Nicolás Alejandro Álvarez Cruz</h4>
+          <p>Diseño UX/UI y Marketing Digital</p>
+        </article>
+        <article class="founder-card">
+          <div class="founder-avatar">NB</div>
+          <h4>Nicolás Alejandro Blanco</h4>
+          <p>Desarrollo y Programación</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="goals-block">
+      <div class="goal-col">
+        <h3>Objetivo general</h3>
+        <p>Diseñar y consolidar una aplicación móvil que promueva hábitos alimenticios saludables y brinde apoyo nutricional y físico diario.</p>
+      </div>
+      <div class="goal-col">
+        <h3>Objetivos específicos</h3>
+        <ul>
+          <li>Investigar las necesidades reales de los usuarios en nutrición y actividad física.</li>
+          <li>Desarrollar un modelo de negocio sostenible basado en anuncios y suscripciones premium.</li>
+          <li>Garantizar la seguridad y la privacidad de los datos personales de los usuarios.</li>
+          <li>Crear alianzas estratégicas con gimnasios, nutricionistas e influenciadores del sector.</li>
+          <li>Implementar estrategias de marketing digital para captar y fidelizar usuarios.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="contact-block">
+      <h3>Contáctanos</h3>
+      <div class="contact-links">
+        <a href="https://wa.me/573000000000" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-icon">📱</span> WhatsApp
+        </a>
+        <a href="https://instagram.com/nutriamigo" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-icon">📷</span> Instagram
+        </a>
+        <a href="https://tiktok.com/@nutriamigo" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-icon">🎵</span> TikTok
+        </a>
+      </div>
+      <p class="contact-email">Correo corporativo: <a href="mailto:nutriamigo@gmail.com">nutriamigo@gmail.com</a></p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand"><img src="./assets/logo.png" alt="NutriAmigo"><span>NutriAmigo S.A.S.</span></div>
+      <p>"Tu salud en la palma de tu mano" — Institución Educativa Bosques de Sirivana, Yopal, Casanare.</p>
+    </div>
+  </footer>
+</section>
+
+<button class="chat-fab" id="chatFab" aria-label="Abrir chat de ayuda">
+  <img src="./assets/logo.png" alt="">
+</button>
+<div class="chat-panel" id="chatPanel" hidden>
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <img src="./assets/logo.png" alt="">
+      <div><strong>Ayuda NutriAmigo</strong><span>Preguntas frecuentes</span></div>
+    </div>
+    <button class="chat-close" id="chatClose" aria-label="Cerrar chat">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg chat-msg-bot">¡Hola! Escríbeme tu pregunta sobre NutriAmigo — planes, Premium, la comunidad o tu cuenta.</div>
+  </div>
+  <form class="chat-input-row" id="chatForm">
+    <input type="text" id="chatInput" placeholder="Escribe tu pregunta…" autocomplete="off" required>
+    <button type="submit" aria-label="Enviar">➤</button>
+  </form>
+</div>
+
+<script src="./js/demo-mode.js"></script>
+<script src="./js/script.js"></script>
+<script src="./data/faq.js"></script>
+<script src="./js/faq-bot.js"></script>
+<script src="./js/pwa.js"></script>
+</body>
+</html>

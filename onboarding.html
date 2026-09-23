@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<script>try{
+  var temaGuardado = localStorage.getItem("nutriamigo_theme");
+  if (!temaGuardado) {
+    var hora = new Date().getHours();
+    temaGuardado = (hora >= 19 || hora < 7) ? "oscuro" : "claro"; // solo si el usuario nunca eligió manualmente
+  }
+  document.documentElement.setAttribute("data-theme", temaGuardado);
+}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Completa tus datos — NutriAmigo</title>
+<link rel="icon" href="./assets/logo.png" type="image/png">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#2ea877">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/styles.css">
+<link rel="stylesheet" href="./css/app.css">
+<link rel="stylesheet" href="./css/onboarding.css">
+</head>
+<body style="background:var(--green-50);">
+
+<div class="onboarding-shell">
+  <div class="onboarding-card">
+    <div class="onboarding-brand">
+      <img src="./assets/logo.png" alt="">
+      <span>NutriAmigo</span>
+    </div>
+
+    <div class="onboarding-steps" id="stepDots">
+      <span class="step-dot active" data-step="1"></span>
+      <span class="step-dot" data-step="2"></span>
+      <span class="step-dot" data-step="3"></span>
+      <span class="step-dot" data-step="4"></span>
+    </div>
+
+    <form id="onboardingForm">
+
+      <div class="onboarding-step" data-step="1">
+        <h2>Creemos tu perfil</h2>
+        <p class="section-sub">Estos datos son de demostración para este prototipo — tu cuenta real sigue siendo la de Google.</p>
+        <div class="field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div class="field"><label>Nombre</label><input type="text" id="obNombre" required></div>
+          <div class="field"><label>Apellido</label><input type="text" id="obApellido" required></div>
+        </div>
+        <div class="field">
+          <label>Correo</label>
+          <input type="email" id="obCorreo" placeholder="tucorreo@ejemplo.com">
+        </div>
+        <div class="onboarding-actions">
+          <span></span>
+          <button type="button" class="btn btn-primary" data-next>Siguiente</button>
+        </div>
+      </div>
+
+      <div class="onboarding-step" data-step="2" hidden>
+        <h2>Empecemos por lo básico</h2>
+        <p class="section-sub">Esto es lo que usamos para calcular tu índice de masa corporal y tus calorías diarias.</p>
+        <div class="field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div class="field"><label>Peso (kg)</label><input type="number" id="obPeso" step="0.1" min="30" max="250" required></div>
+          <div class="field"><label>Altura (cm)</label><input type="number" id="obEstatura" min="120" max="220" required></div>
+        </div>
+        <div class="onboarding-actions">
+          <button type="button" class="btn btn-ghost" data-back>Atrás</button>
+          <button type="button" class="btn btn-primary" data-next>Siguiente</button>
+        </div>
+      </div>
+
+      <div class="onboarding-step" data-step="3" hidden>
+        <h2>Cuéntanos un poco más</h2>
+        <p class="section-sub">Tu edad, tu género y tu nivel de actividad afectan cuánta energía necesitas al día.</p>
+        <div class="field" style="margin-bottom:16px;">
+          <label>Género</label>
+          <div class="pill-group" id="sexoGroup">
+            <button type="button" class="pill" data-sexo="mujer">Mujer</button>
+            <button type="button" class="pill" data-sexo="hombre">Hombre</button>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:16px;">
+          <label>Edad</label>
+          <input type="number" id="obEdad" min="12" max="90" required>
+        </div>
+        <div class="field">
+          <label>Nivel de actividad física</label>
+          <select id="obActividad" required>
+            <option value="" disabled selected>Selecciona…</option>
+            <option value="sedentario">Sedentario (poco o ningún ejercicio)</option>
+            <option value="ligero">Ligero (1–3 días/semana)</option>
+            <option value="moderado">Moderado (3–5 días/semana)</option>
+            <option value="activo">Activo (6–7 días/semana)</option>
+            <option value="muy_activo">Muy activo (entrenamiento intenso)</option>
+          </select>
+        </div>
+        <div class="onboarding-actions">
+          <button type="button" class="btn btn-ghost" data-back>Atrás</button>
+          <button type="button" class="btn btn-primary" data-next>Siguiente</button>
+        </div>
+      </div>
+
+      <div class="onboarding-step" data-step="4" hidden>
+        <h2>¿Cuál es tu objetivo?</h2>
+        <p class="section-sub">Con esto ajustamos tus calorías: déficit para definir, superávit para subir de peso.</p>
+        <div class="ai-suggestion" id="aiSuggestion" hidden>
+          <strong id="aiSuggestionTitle"></strong>
+          <p id="aiSuggestionText"></p>
+        </div>
+        <div class="pill-group" id="objetivoGroup">
+          <button type="button" class="pill" data-objetivo="definir">Definir</button>
+          <button type="button" class="pill" data-objetivo="mantener">Mantener</button>
+          <button type="button" class="pill" data-objetivo="volumen">Subir de peso</button>
+        </div>
+        <div class="onboarding-actions">
+          <button type="button" class="btn btn-ghost" data-back>Atrás</button>
+          <button type="submit" class="btn btn-primary">Ver mis resultados</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script src="./js/demo-mode.js"></script>
+<script src="./js/calorias.js"></script>
+<script src="./js/onboarding.js"></script>
+</body>
+</html>

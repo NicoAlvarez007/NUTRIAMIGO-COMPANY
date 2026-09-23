@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<script>try{
+  var temaGuardado = localStorage.getItem("nutriamigo_theme");
+  if (!temaGuardado) {
+    var hora = new Date().getHours();
+    temaGuardado = (hora >= 19 || hora < 7) ? "oscuro" : "claro"; // solo si el usuario nunca eligió manualmente
+  }
+  document.documentElement.setAttribute("data-theme", temaGuardado);
+}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu panel — NutriAmigo</title>
+<link rel="icon" href="./assets/logo.png" type="image/png">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#2ea877">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/styles.css">
+<link rel="stylesheet" href="./css/app.css">
+<link rel="stylesheet" href="./css/chat.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-header-inner">
+    <a href="./dashboard.html" class="app-brand"><img src="./assets/logo.png" alt="">NutriAmigo</a>
+    <nav class="app-nav">
+      <a href="./dashboard.html" class="active">Inicio</a>
+      <a href="./alimentacion.html">Alimentación</a>
+      <a href="./entrenamiento.html">Entrenamiento</a>
+      <a href="./comunidad.html">Comunidad</a>
+      <a href="./premium.html" data-free-only>Premium</a>
+    </nav>
+    <span class="plan-badge" data-plan-badge>Gratis</span>
+    <div class="app-profile">
+      <button class="app-profile-btn" id="profileBtn">
+        <span class="app-avatar" data-user-avatar>--</span>
+      </button>
+      <div class="app-profile-menu" id="profileMenu">
+        <div class="app-profile-card">
+          <div class="app-profile-card-header">
+            <span class="app-avatar" data-user-avatar>--</span>
+            <div>
+              <strong data-user-name>...</strong>
+              <span><span data-user-streak>0</span> días de racha</span>
+              <span class="rango-badge" data-user-rango hidden></span>
+            </div>
+          </div>
+          <a href="./premium.html" data-free-only>Membresía Premium</a>
+          <a href="./premium.html" data-premium-only hidden>Gestionar suscripción</a>
+          <button type="button" id="settingsBtn">Configuración</button>
+          <button type="button" id="logoutBtn">Cerrar sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="app-shell">
+  <main class="app-main">
+    <div id="metaAlcanzadaBanner" class="card" style="background:var(--green-50);border:1px solid var(--green-200,var(--green-500));margin-bottom:16px;" hidden>
+      <strong>🎉 ¡Alcanzaste tu peso objetivo!</strong>
+      <p style="margin:6px 0 10px;">¿Quieres pasar a un plan de mantenimiento para conservar tu progreso?</p>
+      <button type="button" class="btn btn-primary">Cambiar a modo Mantener</button>
+    </div>
+    <div class="greeting-row">
+      <div>
+        <h1>Hola, <span data-user-name>...</span></h1>
+        <p>Este es tu resumen de hoy.</p>
+      </div>
+      <div class="streak-widget">
+        <span class="streak-flame">🔥</span>
+        <div><strong data-user-streak>0</strong><span> días de racha</span></div>
+      </div>
+    </div>
+    <div style="margin-bottom:20px;">
+      <button class="btn btn-ghost" id="downloadSummaryBtn">Descargar mi plan completo (PDF)</button>
+    </div>
+
+    <div class="results-grid" id="resultsGrid" style="display:none;">
+      <div class="result-stat-card">
+        <span class="mini-label">Índice de masa corporal</span>
+        <strong id="imcValue">--</strong>
+        <small id="imcTag">—</small>
+      </div>
+      <div class="result-stat-card">
+        <span class="mini-label">Sugerencia recomendada por IA</span>
+        <strong id="aiSuggestionValue">--</strong>
+        <small>Basada en tu IMC</small>
+      </div>
+      <div class="result-stat-card">
+        <span class="mini-label">Meta calórica diaria</span>
+        <strong id="kcalValue">-- kcal</strong>
+      </div>
+      <div class="result-stat-card macros-card">
+        <span class="mini-label">Macronutrientes</span>
+        <div class="macro-row"><span>Proteína</span><b id="macroProteina">--</b></div>
+        <div class="macro-row"><span>Carbohidratos</span><b id="macroCarbs">--</b></div>
+        <div class="macro-row"><span>Grasas</span><b id="macroGrasas">--</b></div>
+      </div>
+    </div>
+    <div class="card" id="noBioCard" style="margin-bottom:24px;">
+      <p>Aún no tienes tus datos base cargados. <a href="./onboarding.html" style="color:var(--green-600);font-weight:600;">Complétalos aquí</a> para ver tu IMC, tus calorías y tus macros.</p>
+    </div>
+
+    <div class="dash-grid">
+      <div class="dash-card">
+        <h3>Tu progreso de peso</h3>
+        <form class="progress-form" id="progressForm">
+          <input type="number" id="progressPeso" placeholder="Peso de hoy (kg)" step="0.1" min="30" max="200" required>
+          <button type="submit">Registrar</button>
+        </form>
+        <canvas id="progressChart" width="520" height="200"></canvas>
+        <p class="progress-empty" id="progressEmpty">Aún no tienes registros. Ingresa tu peso de hoy para empezar.</p>
+        <div class="week-tabs" id="progressViewTabs" style="margin-top:10px;">
+          <button type="button" class="week-tab active" data-vista="semana">Semana</button>
+          <button type="button" class="week-tab" data-vista="mes">Mes</button>
+          <button type="button" class="week-tab" data-vista="año">Año</button>
+        </div>
+        <button type="button" id="clearProgressBtn" class="btn btn-ghost" style="margin-top:14px;width:100%;">Borrar historial</button>
+        <button type="button" id="exportProgressBtn" class="btn btn-ghost" style="margin-top:10px;width:100%;">Exportar historial a Excel</button>
+      </div>
+
+      <div class="dash-card">
+        <h3>Tu IMC en el tiempo</h3>
+        <p class="section-sub" style="margin-bottom:14px;">Calculado con tu peso registrado y tu estatura guardada.</p>
+        <canvas id="imcChart" width="520" height="200"></canvas>
+        <p class="progress-empty" id="imcEmpty">Aún no hay suficientes datos para mostrar tu IMC en el tiempo.</p>
+      </div>
+
+      <div class="dash-card">
+        <h3>Registro diario</h3>
+        <p class="section-sub" style="margin-bottom:14px;">Cuánta agua tomaste y cuántos km recorriste hoy.</p>
+        <div class="daily-log-row">
+          <span class="mini-label">Vasos de agua hoy</span>
+          <div class="counter-control">
+            <button type="button" id="waterMinusBtn">−</button>
+            <strong id="waterCount">0</strong>
+            <button type="button" id="waterPlusBtn">+</button>
+          </div>
+        </div>
+        <div class="daily-log-row">
+          <span class="mini-label">Kilómetros recorridos hoy</span>
+          <input type="number" id="kmInput" step="0.1" min="0" placeholder="0.0">
+        </div>
+        <button type="button" id="saveDailyLogBtn" class="btn btn-primary" style="width:100%;margin-top:10px;">Guardar registro de hoy</button>
+      </div>
+
+      <div class="dash-card">
+        <h3>Logros</h3>
+        <div class="achievements-grid" id="achievementsGrid"></div>
+      </div>
+
+      <div class="dash-card">
+        <h3>Accesos rápidos</h3>
+        <div class="quick-links">
+          <a class="quick-link" href="./alimentacion.html">
+            <span class="quick-link-icon">🍽️</span>
+            <div><strong>Plan de alimentación</strong><span>Tu menú de esta semana</span></div>
+          </a>
+          <a class="quick-link" href="./entrenamiento.html">
+            <span class="quick-link-icon">🏋️</span>
+            <div><strong>Plan de entrenamiento</strong><span>Tu rutina de esta semana</span></div>
+          </a>
+          <a class="quick-link" href="./comunidad.html">
+            <span class="quick-link-icon">💬</span>
+            <div><strong>Comunidad</strong><span>Chatea con otros usuarios</span></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="printable-summary" id="printableSummary">
+  <div class="printable-header">
+    <img src="./assets/logo.png" alt="">
+    <div><strong>NutriAmigo</strong><span>Tu resumen de salud</span></div>
+  </div>
+  <div id="printableBody"></div>
+</div>
+
+<button class="chat-fab" id="chatFab" aria-label="Abrir chat de ayuda">
+  <img src="./assets/logo.png" alt="">
+</button>
+<div class="chat-panel" id="chatPanel" hidden>
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <img src="./assets/logo.png" alt="">
+      <div><strong>Ayuda NutriAmigo</strong><span>Preguntas frecuentes</span></div>
+    </div>
+    <button class="chat-close" id="chatClose" aria-label="Cerrar chat">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg chat-msg-bot">¡Hola! Escríbeme tu pregunta sobre NutriAmigo.</div>
+  </div>
+  <form class="chat-input-row" id="chatForm">
+    <input type="text" id="chatInput" placeholder="Escribe tu pregunta…" autocomplete="off" required>
+    <button type="submit" aria-label="Enviar">➤</button>
+  </form>
+</div>
+
+<script src="./js/demo-mode.js"></script>
+<script src="./js/app.js"></script>
+<script src="./js/settings.js"></script>
+<script src="./js/ads.js"></script>
+<script src="./js/calorias.js"></script>
+<script src="./data/meals.js"></script>
+<script src="./data/workouts.js"></script>
+<script src="./js/plan-shared.js"></script>
+<script src="./js/dashboard.js"></script>
+<script src="./data/faq.js"></script>
+<script src="./js/faq-bot.js"></script>
+<script src="./js/pwa.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<script>try{
+  var temaGuardado = localStorage.getItem("nutriamigo_theme");
+  if (!temaGuardado) {
+    var hora = new Date().getHours();
+    temaGuardado = (hora >= 19 || hora < 7) ? "oscuro" : "claro"; // solo si el usuario nunca eligió manualmente
+  }
+  document.documentElement.setAttribute("data-theme", temaGuardado);
+}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de alimentación — NutriAmigo</title>
+<link rel="icon" href="./assets/logo.png" type="image/png">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#2ea877">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/styles.css">
+<link rel="stylesheet" href="./css/app.css">
+<link rel="stylesheet" href="./css/chat.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-header-inner">
+    <a href="./dashboard.html" class="app-brand"><img src="./assets/logo.png" alt="">NutriAmigo</a>
+    <nav class="app-nav">
+      <a href="./dashboard.html">Inicio</a>
+      <a href="./alimentacion.html" class="active">Alimentación</a>
+      <a href="./entrenamiento.html">Entrenamiento</a>
+      <a href="./comunidad.html">Comunidad</a>
+      <a href="./premium.html" data-free-only>Premium</a>
+    </nav>
+    <span class="plan-badge" data-plan-badge>Gratis</span>
+    <div class="app-profile">
+      <button class="app-profile-btn" id="profileBtn"><span class="app-avatar" data-user-avatar>--</span></button>
+      <div class="app-profile-menu" id="profileMenu">
+        <div class="app-profile-card">
+          <div class="app-profile-card-header">
+            <span class="app-avatar" data-user-avatar>--</span>
+            <div>
+              <strong data-user-name>...</strong>
+              <span><span data-user-streak>0</span> días de racha</span>
+              <span class="rango-badge" data-user-rango hidden></span>
+            </div>
+          </div>
+          <a href="./premium.html" data-free-only>Membresía Premium</a>
+          <a href="./premium.html" data-premium-only hidden>Gestionar suscripción</a>
+          <button type="button" id="settingsBtn">Configuración</button>
+          <button type="button" id="logoutBtn">Cerrar sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="app-shell">
+  <main class="app-main">
+    <div class="plan-header">
+      <div>
+        <h1>Tu plan de alimentación</h1>
+        <p>Dos opciones por comida, calculadas para tus datos y tu objetivo.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-ghost" id="downloadMealsBtn">Descargar en PDF</button>
+        <button class="btn btn-primary" id="personalizeBtn">Personalizar</button>
+      </div>
+    </div>
+
+    <div class="card" id="planSummary" style="margin-bottom:22px;font-size:13.5px;color:var(--text-soft);"></div>
+
+    <div class="premium-lock" id="premiumLock" data-free-only>
+      <div>
+        <strong>Personalización disponible en Premium</strong>
+        <p>Elige tipo de proteína y restricciones alimentarias (vegetariano, vegano, sin lactosa, sin gluten).</p>
+      </div>
+      <a href="./premium.html" class="btn btn-primary">Conocer Premium</a>
+    </div>
+
+    <div class="week-tabs" id="weekTabs"></div>
+    <div class="day-slots" id="daySlots"></div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="personalizeModal" hidden>
+  <div class="modal">
+    <h3>Personalizar alimentación</h3>
+    <p class="section-sub">Ajusta tu plan según tus preferencias.</p>
+    <form id="personalizeForm">
+      <div class="field">
+        <label>Tipo(s) de proteína</label>
+        <div class="checkbox-group" id="tipoProteinaGroup">
+          <label><input type="checkbox" name="tipoProteina" value="pollo"> Pollo</label>
+          <label><input type="checkbox" name="tipoProteina" value="pescado"> Pescado</label>
+          <label><input type="checkbox" name="tipoProteina" value="carne"> Carne de res</label>
+          <label><input type="checkbox" name="tipoProteina" value="vegetariano"> Vegetariano</label>
+          <label><input type="checkbox" name="tipoProteina" value="vegano"> Vegano</label>
+        </div>
+        <p class="field-hint">Puedes combinar pollo, pescado y carne. "Vegano" o "vegetariano" no se pueden combinar con las de origen animal.</p>
+      </div>
+      <div class="field">
+        <label>Restricciones o alergias</label>
+        <input type="text" id="restriccionesTexto" placeholder="Ej. sin maní, sin lactosa, alergia a mariscos…">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="closeModalBtn">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="printable-summary" id="printableSummary">
+  <div class="printable-header">
+    <img src="./assets/logo.png" alt="">
+    <div><strong>NutriAmigo</strong><span>Tu plan de alimentación semanal</span></div>
+  </div>
+  <div id="printableBody"></div>
+</div>
+
+<button class="chat-fab" id="chatFab" aria-label="Abrir chat de ayuda"><img src="./assets/logo.png" alt=""></button>
+<div class="chat-panel" id="chatPanel" hidden>
+  <div class="chat-header">
+    <div class="chat-header-info"><img src="./assets/logo.png" alt=""><div><strong>Ayuda NutriAmigo</strong><span>Preguntas frecuentes</span></div></div>
+    <button class="chat-close" id="chatClose" aria-label="Cerrar chat">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg chat-msg-bot">¡Hola! Escríbeme tu pregunta sobre NutriAmigo.</div>
+  </div>
+  <form class="chat-input-row" id="chatForm">
+    <input type="text" id="chatInput" placeholder="Escribe tu pregunta…" autocomplete="off" required>
+    <button type="submit" aria-label="Enviar">➤</button>
+  </form>
+</div>
+
+<script src="./js/demo-mode.js"></script>
+<script src="./js/app.js"></script>
+<script src="./js/settings.js"></script>
+<script src="./js/ads.js"></script>
+<script src="./data/meals.js"></script>
+<script src="./js/plan-shared.js"></script>
+<script src="./js/alimentacion.js"></script>
+<script src="./data/faq.js"></script>
+<script src="./js/faq-bot.js"></script>
+<script src="./js/pwa.js"></script>
+</body>
+</html>

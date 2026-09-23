@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<script>try{
+  var temaGuardado = localStorage.getItem("nutriamigo_theme");
+  if (!temaGuardado) {
+    var hora = new Date().getHours();
+    temaGuardado = (hora >= 19 || hora < 7) ? "oscuro" : "claro"; // solo si el usuario nunca eligió manualmente
+  }
+  document.documentElement.setAttribute("data-theme", temaGuardado);
+}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de entrenamiento — NutriAmigo</title>
+<link rel="icon" href="./assets/logo.png" type="image/png">
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#2ea877">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/styles.css">
+<link rel="stylesheet" href="./css/app.css">
+<link rel="stylesheet" href="./css/chat.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="app-header-inner">
+    <a href="./dashboard.html" class="app-brand"><img src="./assets/logo.png" alt="">NutriAmigo</a>
+    <nav class="app-nav">
+      <a href="./dashboard.html">Inicio</a>
+      <a href="./alimentacion.html">Alimentación</a>
+      <a href="./entrenamiento.html" class="active">Entrenamiento</a>
+      <a href="./comunidad.html">Comunidad</a>
+      <a href="./premium.html" data-free-only>Premium</a>
+    </nav>
+    <span class="plan-badge" data-plan-badge>Gratis</span>
+    <div class="app-profile">
+      <button class="app-profile-btn" id="profileBtn"><span class="app-avatar" data-user-avatar>--</span></button>
+      <div class="app-profile-menu" id="profileMenu">
+        <div class="app-profile-card">
+          <div class="app-profile-card-header">
+            <span class="app-avatar" data-user-avatar>--</span>
+            <div>
+              <strong data-user-name>...</strong>
+              <span><span data-user-streak>0</span> días de racha</span>
+              <span class="rango-badge" data-user-rango hidden></span>
+            </div>
+          </div>
+          <a href="./premium.html" data-free-only>Membresía Premium</a>
+          <a href="./premium.html" data-premium-only hidden>Gestionar suscripción</a>
+          <button type="button" id="settingsBtn">Configuración</button>
+          <button type="button" id="logoutBtn">Cerrar sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="app-shell">
+  <main class="app-main">
+    <div class="plan-header">
+      <div>
+        <h1>Tu plan de entrenamiento</h1>
+        <p>Dos opciones de rutina por día, según tu objetivo y tu nivel de actividad.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-ghost" id="downloadWorkoutBtn">Descargar en PDF</button>
+        <button class="btn btn-primary" id="personalizeBtn">Personalizar</button>
+      </div>
+    </div>
+
+    <div class="card" id="planSummary" style="margin-bottom:22px;font-size:13.5px;color:var(--text-soft);"></div>
+
+    <div class="mini-card" id="kcalCard" style="max-width:320px;margin-bottom:24px;display:none;">
+      <span class="mini-label">Meta calórica con tu objetivo actual</span>
+      <strong id="kcalValue">-- kcal</strong>
+    </div>
+
+    <p class="section-sub" style="margin-bottom:22px;">Objetivo actual: <b id="objetivoActualLabel">Mantener</b> — para cambiarlo, ve a Configuración en el menú de tu perfil.</p>
+
+    <div class="premium-lock" id="premiumLock" data-free-only>
+      <div>
+        <strong>Personalización disponible en Premium</strong>
+        <p>Elige frecuencia semanal, distancia a correr y enfoque muscular específico.</p>
+      </div>
+      <a href="./premium.html" class="btn btn-primary">Conocer Premium</a>
+    </div>
+
+    <div class="week-tabs" id="weekTabs"></div>
+    <div class="day-slots" id="daySlots"></div>
+  </main>
+</div>
+
+<div class="modal-overlay" id="personalizeModal" hidden>
+  <div class="modal">
+    <h3>Personalizar entrenamiento</h3>
+    <p class="section-sub">Ajusta tu rutina según tus preferencias.</p>
+    <form id="personalizeForm">
+      <div class="field">
+        <label>Frecuencia semanal (días)</label>
+        <select id="frecuenciaSemanal">
+          <option value="3">3 días</option>
+          <option value="4">4 días</option>
+          <option value="5">5 días</option>
+          <option value="6">6 días</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Distancia a correr (km, opcional)</label>
+        <input type="number" id="distanciaKm" min="0" step="0.5" placeholder="Ej. 5">
+      </div>
+      <div class="field">
+        <label>Enfoque muscular</label>
+        <select id="enfoqueMuscular">
+          <option value="cuerpo_completo">Cuerpo completo</option>
+          <option value="piernas">Piernas</option>
+          <option value="brazos">Brazos</option>
+          <option value="espalda">Espalda</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="closeModalBtn">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="printable-summary" id="printableSummary">
+  <div class="printable-header">
+    <img src="./assets/logo.png" alt="">
+    <div><strong>NutriAmigo</strong><span>Tu plan de entrenamiento semanal</span></div>
+  </div>
+  <div id="printableBody"></div>
+</div>
+
+<button class="chat-fab" id="chatFab" aria-label="Abrir chat de ayuda"><img src="./assets/logo.png" alt=""></button>
+<div class="chat-panel" id="chatPanel" hidden>
+  <div class="chat-header">
+    <div class="chat-header-info"><img src="./assets/logo.png" alt=""><div><strong>Ayuda NutriAmigo</strong><span>Preguntas frecuentes</span></div></div>
+    <button class="chat-close" id="chatClose" aria-label="Cerrar chat">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg chat-msg-bot">¡Hola! Escríbeme tu pregunta sobre NutriAmigo.</div>
+  </div>
+  <form class="chat-input-row" id="chatForm">
+    <input type="text" id="chatInput" placeholder="Escribe tu pregunta…" autocomplete="off" required>
+    <button type="submit" aria-label="Enviar">➤</button>
+  </form>
+</div>
+
+<script src="./js/demo-mode.js"></script>
+<script src="./js/app.js"></script>
+<script src="./js/settings.js"></script>
+<script src="./js/ads.js"></script>
+<script src="./js/calorias.js"></script>
+<script src="./data/workouts.js"></script>
+<script src="./js/plan-shared.js"></script>
+<script src="./js/entrenamiento.js"></script>
+<script src="./data/faq.js"></script>
+<script src="./js/faq-bot.js"></script>
+<script src="./js/pwa.js"></script>
+</body>
+</html>
